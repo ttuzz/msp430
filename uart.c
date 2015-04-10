@@ -13,7 +13,7 @@ void 1Mhz_9600Baud(void){
 	UCA0BR0 = 104;                            // 1MHz 9600
 	UCA0BR1 = 0;                              // 1MHz 9600
 	UCA0MCTL = UCBRS0;
-	UCA0CTL1 &= ~UCSWRST;			  		  // **Initialize USCI state machine**
+	UCA0CTL1 &= ~UCSWRST;					  // **Initialize USCI state machine**
 }
 void 1Mhz_11500Baud(void){
 	HardwareUart();
