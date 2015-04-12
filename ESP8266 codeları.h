@@ -15,7 +15,7 @@ AT+CIPMODE=1\r\n	//Unvarnished
 AT+CIPMUX=0\r\n 	//Single
 AT+CIPMUX=1\r\n 	//Multiple
 
-AT+CWJAP="zcnzkn","Tarantula_oz_10@"\r\n
+AT+CWJAP="İD","KEY"\r\n
 
 
 AT+CWSAP="ttuzz","12345678",6,4 		//channel,4=WPA_WPA'
@@ -31,3 +31,11 @@ AT+CIPSEND=0,466\r\n		//0=id , 466=legent
 AT+CIPCLOSE="5"
 
 //_____________________________________________________
+
+
+A	T	+	C	W	J	A 	P	=
+41  54  2B  43  57  4A  41  50  3D  22  7A  63  7A  6B
+
+
+" 34  0X22
+, 44  0X2C
