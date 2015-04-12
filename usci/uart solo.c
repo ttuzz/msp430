@@ -40,7 +40,7 @@ void initUART (void){  //9600 baud
 #pragma vector=USCIAB0TX_VECTOR
 __interrupt void USCI0TX_ISR(void)
 {
-	if(IFG2&UCB0TXIE)						
+	if(IFG2&UCA0TXIE)						
 	{
 	while(!(IFG2 & UCA0TXIFG));
 	UCA0TXBUF=TXuart;
