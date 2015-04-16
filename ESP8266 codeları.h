@@ -41,3 +41,10 @@ A	T	+	C	W	J	A 	P	=
 , 44  0X2C
 
 +IPD,
+
+
+//_____________________________________________________
+
+AT+CIPSEND=0,43\r\n
+43
+GET /receiver.php?appled=56&23 HTTP/1.1\r\n
