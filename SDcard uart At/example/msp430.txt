@@ -1,0 +1,3 @@
+Uart uzerinden gonderilen dosya adini 
+SDcard icinde bulup dosya icerigini 
+uart uzerinden gondermek
