@@ -4,7 +4,7 @@
 #define UART_H_
 
 
-void HardwareUart(void);
+void standart(void);
 void setup_1Mhz_9600Baud(void);
 void setup_1Mhz_11500Baud(void);
 void setup_16Mhz_9600Baud(void);
