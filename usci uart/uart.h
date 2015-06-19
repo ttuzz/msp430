@@ -6,8 +6,8 @@
 char TXuart;
 char RXuart;
 
-void uartoff(void);
-void setup_uart (uint32_t SMCLK_F,uint16_t BAUDRATE);
+void disable_uart(void);
+void initialize_uart (uint32_t SMCLK_F,uint16_t BAUDRATE);
 
 void UART_Write_Char(unsigned  char chr);
 void UART_Write_String (char *pui8Buffer);
