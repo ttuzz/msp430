@@ -1,3 +1,8 @@
+/*
+ * Zcn Zkn 20 06 2015
+ *
+ * energia kütüphanesinden düzenlemiştir
+ */
 #include <msp430.h>
 #include <stdint.h>
 #include "spi.h"
@@ -6,80 +11,53 @@
 #error "Error! This MCU doesn't have a USCI peripheral"
 #endif
 
-#define SPI_MODE_0 UCCKPH | UCMSB| UCMST | UCSYNC /* CPOL=0 CPHA=0 */
-#define SPI_MODE_3 UCCKPL | UCMSB| UCMST | UCSYNC /* CPOL=1 CPHA=1 */
 
-/**
- * spi_initialize() - Initialize and enable the SPI module
- *
- * P2.0 - CS (active low)
- * P1.5 - SCLK
- * P1.6 - MISO
- * P1.7 - MOSI
- *
- */
-void spi_initialize(void)
+#define CS_SLCT()	P2OUT &= ~Cs_pin	/* CS = L */
+#define	CS_DSLCT()	P2OUT |= Cs_pin   /* CS = H */
+#define	CS_SEL		!(P2OUT & Cs_pin)	/* CS status (true:CS == L) */
+
+void spi_initialize(uint32_t SMCLK_F,uint32_t BAUDRATE)
 {
+	Spi_divider=SMCLK_F/BAUDRATE; //must be integer value
+	mcu_speed=SMCLK_F;
 	UCB0CTL1 = UCSSEL_2 | UCSWRST;	// source USCI clock from SMCLK, put USCI in reset mode
 	UCB0CTL0 |= SPI_MODE_0;			// SPI MODE 0 - CPOL=0 CPHA=0
 									// note: UCCKPH is inverted from CPHA
+//	UCA0MCTL= 0;   // No modulation just USCA0
+	P1SEL  |= Spi_pin;
+	P1SEL2 |= Spi_pin;
 
-	P1SEL  |= BIT5 | BIT6 | BIT7;	// configure P1.5, P1.6, P1.7 for USCI
-	P1SEL2 |= BIT5 | BIT6 | BIT7;
+	UCB0BR0 = (unsigned char) Spi_divider&0x00FF;	// set initial speed
+	UCB0BR1 = (unsigned char) ((Spi_divider >> 8) &0x00FF);
 
-	UCB0BR0 = LOBYTE(SPI_400kHz);	// set initial speed 16MHz/400000 = 400kHz
-	UCB0BR1 = HIBYTE(SPI_400kHz);
-
-	P2OUT |= BIT0;					// CS on P2.0. start out disabled
-	P2DIR |= BIT0;					// CS configured as output
+	P2OUT |= Cs_pin;					// CS on P2.0. start out disabled
+	P2DIR |= Cs_pin;					// CS configured as output
 
 	UCB0CTL1 &= ~UCSWRST;			// release for operation
 }
 
-/**
- * spi_send() - send a byte and recv response
- */
+ // spi_send() - send a byte and recv response
 uint8_t spi_send(const uint8_t c)
 {
-	while (!(UC0IFG & UCB0TXIFG))
-		; // wait for previous tx to complete
-
+	while (!(UC0IFG & UCB0TXIFG)); // wait for previous tx to complete
 	UCB0TXBUF = c; // setting TXBUF clears the TXIFG flag
-
-	while (!(UC0IFG & UCB0RXIFG))
-		; // wait for an rx character?
-
+	while (!(UC0IFG & UCB0RXIFG)); // wait for an rx character?
 	return UCB0RXBUF; // reading clears RXIFG flag
 }
 
-/**
- * spi_receive() - send dummy btye then recv response
- */
+// spi_receive() - send dummy btye then recv response
 uint8_t spi_receive(void) {
-
-	while (!(UC0IFG & UCB0TXIFG))
-		; // wait for any previous xmits to complete
-
+	while (!(UC0IFG & UCB0TXIFG)); // wait for any previous xmits to complete
 	UCB0TXBUF = 0xFF; // Send dummy packet to get data back.
-
-	while (!(UC0IFG & UCB0RXIFG))
-		; // wait to recv a character?
-
+	while (!(UC0IFG & UCB0RXIFG)); // wait to recv a character?
 	return UCB0RXBUF; // reading clears RXIFG flag
 }
 
-/**
- * spi_setspeed() - set new clock divider for USCI
- *
- * USCI speed is based on the SMCLK divided by BR0 and BR1
- * initially we start slow (400kHz) to conform to SDCard
- * specifications then we speed up once initialized (16Mhz)
- *
- */
-void spi_set_divisor(const uint16_t clkdiv)
+void spi_set_divisor( uint32_t clkdiv)
 {
+	Spi_divider=mcu_speed/clkdiv; //must be integer value
 	UCB0CTL1 |= UCSWRST;		// go into reset state
-	UCB0BR0 = LOBYTE(clkdiv);
-	UCB0BR1 = HIBYTE(clkdiv);
+	UCB0BR0 = (unsigned char) Spi_divider&0x00FF;	// set initial speed
+	UCB0BR1 = (unsigned char) ((Spi_divider >> 8) &0x00FF);
 	UCB0CTL1 &= ~UCSWRST;		// release for operation
 }
