@@ -1,0 +1,4 @@
+    TA0CCR0  = 9999;				// Timer 0-9999 arasynda sayacak.
+    TA0CTL = TASSEL_2 + MC_1;		// Up mode, SMCLK seçildi.
+    TA0CCTL1 = CM_2 + CAP + CCIE;	// Dü?en kenar yakalama, kesme aktif.
+    __bis_SR_register(GIE);					// Kesmeleri aç

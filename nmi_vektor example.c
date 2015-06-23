@@ -18,7 +18,7 @@ IE1 |= NMIIE;                          // Enable NMI
 __interrupt void nmi(void)
 {
 P1OUT^= (BIT6);
-//WDTCTL = WDT_MRST_0_064;		Watchdog reset 0.064ms
+//WDTCTL = WDT_MRST_0_064;		//Watchdog reset 0.064ms
 IFG1&=~NMIIFG;                      //clear nmi interrupt flag
 IE1=NMIIE;                          // enable nmi
 //WDTCTL = WDTPW + WDTHOLD+WDTNMI;    // select nmi function on RST/NMI
