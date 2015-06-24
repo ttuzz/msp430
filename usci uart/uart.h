@@ -9,9 +9,10 @@ char RXuart;
 void disable_uart(void);
 void initialize_uart (uint32_t SMCLK_F,uint16_t BAUDRATE);
 
-void UART_Write_Char(unsigned  char chr);
-void UART_Write_String (char *pui8Buffer);
-void UART_Write_String_With_Size (char *pui8Buffer,int rtp);
-void UART_Write_Int_To_Ascii(unsigned long n);
+void UART_Echo (void);
+void UART_W_Char(unsigned  char chr);
+void UART_W_String (char *pui8Buffer);
+void UART_W_String_With_Size (char *pui8Buffer,int rtp);
+void UART_W_Long(unsigned long n);
 
 #endif /* UART_H_ */

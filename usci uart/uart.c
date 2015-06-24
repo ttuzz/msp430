@@ -31,12 +31,17 @@ UCA0MCTL |=UCBRS_5;	// Modulation UCBRSx = 5
 UCA0CTL1 &=~ UCSWRST; // **Initialize USCI state machine**
 
 }
-void UART_Write_Char(unsigned  char chr){
+void UART_Echo (void){
+    while(!(IFG2 & UCA0TXIFG));
+    TXuart=RXuart;
+    IE2 |= UCA0TXIE;
+}
+void UART_W_Char(unsigned  char chr){
 	while(!(IFG2 & UCA0TXIFG));		//gönderme mesgulken bekle
 	TXuart= chr;
 	IE2 |= UCA0TXIE;                         		 // Enable USCI_A0 TX interrupt Uart
 }
-void UART_Write_String (char *pui8Buffer){
+void UART_W_String (char *pui8Buffer){
 	while(*pui8Buffer!='\0'){
 		while(!(IFG2 & UCA0TXIFG));	//gönderme mesgulken bekle
 		TXuart=*pui8Buffer;
@@ -45,7 +50,7 @@ void UART_Write_String (char *pui8Buffer){
 		}
 }
 
-void UART_Write_String_With_Size (char *pui8Buffer,int rtp){
+void UART_W_String_With_Size (char *pui8Buffer,int rtp){
 	while(rtp--){
 		while(!(IFG2 & UCA0TXIFG));	//gönderme mesgulken bekle
 		TXuart=*pui8Buffer;
@@ -54,13 +59,13 @@ void UART_Write_String_With_Size (char *pui8Buffer,int rtp){
 		}
 }
 
-void UART_Write_Int_To_Ascii(unsigned long n)	//unsigned long max. 4.294.967.295  10char size
+void UART_W_Long(unsigned long n)	//unsigned long max. 4.294.967.295  10char size
 {	unsigned char bufferint[11];
 	bufferint[10]='\0';
-	if(n==0){UART_Write_Char('0');return;}
+	if(n==0){UART_W_Char('0');return;}
 	char i=0;
 	while(n>0 & i<=9){	bufferint[i]=n%10+'0';n/=10;i++;	}
-	while(i--){UART_Write_Char(bufferint[i]);}
+	while(i--){UART_W_Char(bufferint[i]);}
 }
 //_________________________________________________________________________________________
 // USCI A0/B0 Transmit ISR

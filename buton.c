@@ -36,3 +36,25 @@ P1IES7 = 0; //P1.7 kesmesi için yükselen kenar
 P1IFG7 = 0; //P1.7 kesme bayrağı temizleniyor.
 
 __delay_cycles(1000000);
+
+
+// Port 2 kesme vektörü
+#pragma vector=PORT2_VECTOR
+__interrupt void Port_2(void)
+{
+
+  while(!(P2IN & BIT2)); // Buton bırakılana kadar bekle.
+  P2IFG &= ~BIT2;                         // Kesme bayrağını temizle.
+  _bic_SR_register_on_exit(CPUOFF);
+
+}
+void port2_kesme_ayarlari (void){
+    P2DIR &= ~BIT2;                         // Port2.0 giriş.
+    P2REN |=  BIT2;                         // Port2.0 direnci aktif.
+    P2OUT |=  BIT2;                         // Port2.0 direnci Pull-Up.
+    P2IE  |=  BIT2;                         // Port2.0 kesmesini aç.
+    P2IES |=  BIT2;                         // Düşen kenar kesmesini seç.
+    P2IFG |=  BIT2;                         // Kesme bayrağını temizle.
+}
+
+  FCTL2 = FWKEY + FSSEL0 + FN1;             // MCLK/3 for Flash Timing Generator
