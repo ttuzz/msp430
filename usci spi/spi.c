@@ -1,6 +1,7 @@
 /*
- * Zcn Zkn 20 06 2015
+ * Serial Pripheral Interface
  *
+ * Zcn Zkn 20 06 2015
  * energia kutuphanesinden duzenlenmistir
  */
 #include <msp430.h>
@@ -12,16 +13,12 @@
 #endif
 
 
-#define CS_SLCT()	P2OUT &= ~Cs_pin	/* CS = L */
-#define	CS_DSLCT()	P2OUT |= Cs_pin   /* CS = H */
-#define	CS_SEL		!(P2OUT & Cs_pin)	/* CS status (true:CS == L) */
-
 void init_spi(uint32_t SMCLK_F,uint32_t BAUDRATE)
 {
 	Spi_divider=SMCLK_F/BAUDRATE; //must be integer value
 	mcu_speed=SMCLK_F;
 	UCB0CTL1 = UCSSEL_2 | UCSWRST;	// source USCI clock from SMCLK, put USCI in reset mode
-	UCB0CTL0 |= SPI_MODE_0;			// SPI MODE 0 - CPOL=0 CPHA=0
+	UCB0CTL0 |= SPI_MODE_00;			// SPI MODE 0 - CPOL=0 CPHA=0
 									// note: UCCKPH is inverted from CPHA
 //	UCA0MCTL= 0;   // No modulation just USCA0
 	P1SEL  |= Spi_pin;

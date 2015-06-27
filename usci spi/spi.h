@@ -14,6 +14,7 @@
 #define SPI_250kHz 250000
 
 #define SPI_MODE_0 UCCKPH | UCMSB| UCMST | UCSYNC 			    /* CPOL=0 CPHA=0 */
+#define SPI_MODE_00 UCCKPH | UCMSB| UCMST | UCSYNC | UCMODE_0   /* CPOL=0 CPHA=0 */
 #define SPI_MODE_1 UCMSB  | UCMST | UCSYNC					    /* CPOL=0 CPHA=1 */
 #define SPI_MODE_2 UCCKPL | UCCKPH | UCMSB| UCMST | UCSYNC 		/* CPOL=1 CPHA=0 */
 #define SPI_MODE_3 UCCKPL | UCMSB| UCMST | UCSYNC 			    /* CPOL=1 CPHA=1 */
@@ -29,6 +30,15 @@
 #define Spi_pin BIT5 | BIT6 | BIT7 		//UCB spi
 //#define Spi_pin BIT1 | BIT2 | BIT4	//UCA spi
 #define Cs_pin  BIT0	//p2.0
+//_________________________________________________________________________
+#define CSACTIVE(x)  (x==TRUE) ? (P2OUT&=(~Cs_pin)) : (P2OUT|=Cs_pin)
+#define CS_ENABLE       P2OUT &= ~Cs_pin
+#define CS_DISABLE      P2OUT |= Cs_pin
+
+#define CS_SLCT()	P2OUT &= ~Cs_pin	/* CS = L */
+#define	CS_DSLCT()	P2OUT |= Cs_pin   /* CS = H */
+#define	CS_SEL		!(P2OUT & Cs_pin)	/* CS status (true:CS == L) */
+//___________________________________________________________________________
 
 unsigned long mcu_speed;
 unsigned int Spi_divider;
