@@ -16,7 +16,7 @@ void disable_uart (void){
 	UCA0CTL1 |= UCSWRST; // put state machine in reset
 }
 
-void initialize_uart (uint32_t SMCLK_F,uint16_t BAUDRATE){
+void init_uart (uint32_t SMCLK_F,uint16_t BAUDRATE){
 	uint16_t tempfactor;
 P1SEL |= BIT1 + BIT2 ; // P1.1 = RXD, P1.2=TXD
 P1SEL2 |= BIT1 + BIT2;

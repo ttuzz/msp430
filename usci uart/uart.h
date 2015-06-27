@@ -7,7 +7,7 @@ char TXuart;
 char RXuart;
 
 void disable_uart(void);
-void initialize_uart (uint32_t SMCLK_F,uint16_t BAUDRATE);
+void init_uart (uint32_t SMCLK_F,uint16_t BAUDRATE);
 
 void UART_Echo (void);
 void UART_W_Char(unsigned  char chr);

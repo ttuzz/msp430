@@ -18,7 +18,7 @@
 #define SPI_MODE_2 UCCKPL | UCCKPH | UCMSB| UCMST | UCSYNC 		/* CPOL=1 CPHA=0 */
 #define SPI_MODE_3 UCCKPL | UCMSB| UCMST | UCSYNC 			    /* CPOL=1 CPHA=1 */
 /*
- * UCSYNC-> uscı_spi_mod
+ * UCSYNC-> usci_spi_mod
  * UCMST-> spi_master
  * UCMSB->  MSB first
  *
@@ -33,7 +33,7 @@
 unsigned long mcu_speed;
 unsigned int Spi_divider;
 
-void spi_initialize(uint32_t SMCLK_F,uint32_t BAUDRATE);
+void init_spi(uint32_t SMCLK_F,uint32_t BAUDRATE);
 uint8_t spi_send(const uint8_t);
 uint8_t spi_receive(void);
 void spi_set_divisor( uint32_t clkdiv);

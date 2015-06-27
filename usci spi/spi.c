@@ -1,7 +1,7 @@
 /*
  * Zcn Zkn 20 06 2015
  *
- * energia kütüphanesinden düzenlemiştir
+ * energia kutuphanesinden duzenlenmistir
  */
 #include <msp430.h>
 #include <stdint.h>
@@ -16,7 +16,7 @@
 #define	CS_DSLCT()	P2OUT |= Cs_pin   /* CS = H */
 #define	CS_SEL		!(P2OUT & Cs_pin)	/* CS status (true:CS == L) */
 
-void spi_initialize(uint32_t SMCLK_F,uint32_t BAUDRATE)
+void init_spi(uint32_t SMCLK_F,uint32_t BAUDRATE)
 {
 	Spi_divider=SMCLK_F/BAUDRATE; //must be integer value
 	mcu_speed=SMCLK_F;

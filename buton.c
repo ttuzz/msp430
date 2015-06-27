@@ -4,7 +4,7 @@
   	P1REN	|= BIT3;				// Port1.0 Pull-up/down direnci aktif
   	P1OUT	|= BIT3;				// Port1.0 Pull-up özelliği aktif
 
-
+unsigned char leds = 0b00000000;
 
     P1DIR 	&= ~BIT3;
   	P1SEL	&= ~BIT3;
@@ -12,7 +12,7 @@
   	P1REN	|= BIT3;
   	P1OUT	|= BIT3;
 
-
+return(0);}
 
   	while(P1IN & BIT3);						
   	_delay_cycles(16000);					
