@@ -1,17 +1,8 @@
-/*
- * P2.0 - CS (active low)
- *
- * UCB			 UCA
- * P1.5 - SCLK - P1.4
- * P1.6 - MISO - P1.1
- * P1.7 - MOSI - P1.2
- *
- */
 #ifndef SPI_H_
 #define SPI_H_
 
-#define SPI_DEF_SPEED 4000000
-#define SPI_250kHz 250000
+#define Spi_USA_pin BIT1 | BIT2 | BIT4
+#define Spi_USB_pin BIT5 | BIT6 | BIT7
 
 #define SPI_MODE_0 UCCKPH | UCMSB| UCMST | UCSYNC 			    /* CPOL=0 CPHA=0 */
 #define SPI_MODE_00 UCCKPH | UCMSB| UCMST | UCSYNC | UCMODE_0   /* CPOL=0 CPHA=0 */
@@ -26,26 +17,17 @@
  * UCCKPH->	Clock Phase 0
  * UCCKPL-> Clock Polarity 1
  */
+ unsigned long mcu_speed;
+ unsigned int Spi_divider;
 
-#define Spi_pin BIT5 | BIT6 | BIT7 		//UCB spi
-//#define Spi_pin BIT1 | BIT2 | BIT4	//UCA spi
-#define Cs_pin  BIT0	//p2.0
-//_________________________________________________________________________
-#define CSACTIVE(x)  (x==TRUE) ? (P2OUT&=(~Cs_pin)) : (P2OUT|=Cs_pin)
-#define CS_ENABLE       P2OUT &= ~Cs_pin
-#define CS_DISABLE      P2OUT |= Cs_pin
+ void init_spi(uint32_t SMCLK_F,uint32_t BAUDRATE);
+ void spi_Speed_Change( uint32_t clkdiv);
+ void Cs_pin_Select (unsigned char port,unsigned char pin_BITx);
+ void Cs_Disable (uint8_t Cs_pin_BITx);
+ void Cs_Enable (uint8_t Cs_pin_BITx);
 
-#define CS_SLCT()	P2OUT &= ~Cs_pin	/* CS = L */
-#define	CS_DSLCT()	P2OUT |= Cs_pin   /* CS = H */
-#define	CS_SEL		!(P2OUT & Cs_pin)	/* CS status (true:CS == L) */
-//___________________________________________________________________________
+ uint8_t spi_send(const uint8_t c);
+ uint8_t spi_receive(void);
 
-unsigned long mcu_speed;
-unsigned int Spi_divider;
-
-void init_spi(uint32_t SMCLK_F,uint32_t BAUDRATE);
-uint8_t spi_send(const uint8_t);
-uint8_t spi_receive(void);
-void spi_set_divisor( uint32_t clkdiv);
 
 #endif /*SPI_H_*/
